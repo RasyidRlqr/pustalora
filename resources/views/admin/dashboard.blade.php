@@ -22,21 +22,32 @@
                     </h5>
                 </div>
                 <div class="card-body p-4">
-                    <form action="{{ route('admin.books.store') }}" method="POST">
+                    <form action="{{ route('admin.books.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row g-3">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <input type="text" name="title" class="form-control bg-white border-0" placeholder="Judul Buku" required style="border-radius: 8px;">
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <input type="text" name="author" class="form-control bg-white border-0" placeholder="Penulis" required style="border-radius: 8px;">
                             </div>
-                            <div class="col-md-3">
-                                <input type="text" name="isbn" class="form-control bg-white border-0" placeholder="ISBN" style="border-radius: 8px;">
+                            <div class="col-md-2">
+                                <div class="input-group">
+                                    <input type="text" name="isbn" id="isbnInput" class="form-control bg-white border-0" placeholder="ISBN" style="border-radius: 8px 0 0 8px;">
+                                    <button type="button" class="btn btn-outline-secondary" id="generateIsbn" style="border-radius: 0 8px 8px 0;">
+                                        <i class="fas fa-random"></i>
+                                    </button>
+                                </div>
                             </div>
                             <div class="col-md-2">
+                                <input type="number" name="quantity" class="form-control bg-white border-0" placeholder="Jumlah" min="1" value="1" required style="border-radius: 8px;">
+                            </div>
+                            <div class="col-md-2">
+                                <input type="file" name="image" class="form-control bg-white border-0" accept="image/*" style="border-radius: 8px;">
+                            </div>
+                            <div class="col-md-3">
                                 <button type="submit" class="btn w-100" style="background: linear-gradient(45deg, #06b6d4, #0891b2); border: none; color: white; border-radius: 8px;">
-                                    <i class="fas fa-plus me-1"></i>Tambah
+                                    <i class="fas fa-plus me-1"></i>Tambah Buku
                                 </button>
                             </div>
                         </div>
@@ -57,10 +68,12 @@
                             <thead style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
                                 <tr>
                                     <th><i class="fas fa-hashtag me-1"></i>ID</th>
+                                    <th><i class="fas fa-image me-1"></i>Gambar</th>
                                     <th><i class="fas fa-book me-1"></i>Judul</th>
                                     <th><i class="fas fa-user me-1"></i>Penulis</th>
                                     <th><i class="fas fa-barcode me-1"></i>ISBN</th>
-                                    <th><i class="fas fa-info-circle me-1"></i>Status</th>
+                                    <th><i class="fas fa-boxes me-1"></i>Stok</th>
+                                    <th><i class="fas fa-info-circle me-1"></i>Tersedia</th>
                                     <th><i class="fas fa-cogs me-1"></i>Aksi</th>
                                 </tr>
                             </thead>
@@ -68,22 +81,34 @@
                                 @foreach($books as $book)
                                 <tr>
                                     <td class="fw-semibold">{{ $book->id }}</td>
+                                    <td>
+                                        @if($book->image)
+                                            <img src="{{ asset('storage/' . $book->image) }}" alt="{{ $book->title }}" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
+                                        @else
+                                            <i class="fas fa-image text-muted" style="font-size: 2rem;"></i>
+                                        @endif
+                                    </td>
                                     <td class="fw-semibold">{{ $book->title }}</td>
                                     <td>{{ $book->author }}</td>
                                     <td><code>{{ $book->isbn ?: 'N/A' }}</code></td>
                                     <td>
-                                        @if($book->available)
+                                        <span class="badge" style="background: linear-gradient(45deg, #8b5cf6, #7c3aed);">
+                                            <i class="fas fa-box me-1"></i>{{ $book->quantity }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        @if($book->isAvailable())
                                             <span class="badge" style="background: linear-gradient(45deg, #10b981, #059669);">
-                                                <i class="fas fa-check me-1"></i>Tersedia
+                                                <i class="fas fa-check me-1"></i>{{ $book->available_quantity }} tersedia
                                             </span>
                                         @else
                                             <span class="badge" style="background: linear-gradient(45deg, #ef4444, #dc2626);">
-                                                <i class="fas fa-times me-1"></i>Dipinjam
+                                                <i class="fas fa-times me-1"></i>Habis
                                             </span>
                                         @endif
                                     </td>
                                     <td>
-                                        <button class="btn btn-sm me-1 edit-btn" style="background: linear-gradient(45deg, #f59e0b, #d97706); border: none; color: white;" data-id="{{ $book->id }}" data-title="{{ $book->title }}" data-author="{{ $book->author }}" data-isbn="{{ $book->isbn }}" data-available="{{ $book->available }}">
+                                        <button class="btn btn-sm me-1 edit-btn" style="background: linear-gradient(45deg, #f59e0b, #d97706); border: none; color: white;" data-id="{{ $book->id }}" data-title="{{ $book->title }}" data-author="{{ $book->author }}" data-isbn="{{ $book->isbn }}" data-quantity="{{ $book->quantity }}" data-image="{{ $book->image }}">
                                             <i class="fas fa-edit me-1"></i>Edit
                                         </button>
                                         <form action="{{ route('admin.books.destroy', $book) }}" method="POST" class="d-inline">
@@ -117,6 +142,7 @@
                                     <th><i class="fas fa-hashtag me-1"></i>ID</th>
                                     <th><i class="fas fa-user me-1"></i>Peminjam</th>
                                     <th><i class="fas fa-book me-1"></i>Buku</th>
+                                    <th><i class="fas fa-copy me-1"></i>Copy</th>
                                     <th><i class="fas fa-calendar-plus me-1"></i>Tanggal Pinjam</th>
                                     <th><i class="fas fa-calendar-check me-1"></i>Tanggal Kembali</th>
                                     <th><i class="fas fa-info-circle me-1"></i>Status</th>
@@ -133,6 +159,11 @@
                                         </div>
                                     </td>
                                     <td class="fw-semibold">{{ $loan->book->title }}</td>
+                                    <td>
+                                        <span class="badge" style="background: linear-gradient(45deg, #8b5cf6, #7c3aed);">
+                                            <i class="fas fa-hashtag me-1"></i>{{ $loan->copy_number }}
+                                        </span>
+                                    </td>
                                     <td>{{ $loan->borrowed_at->format('d/m/Y') }}</td>
                                     <td>{{ $loan->returned_at ? $loan->returned_at->format('d/m/Y') : '-' }}</td>
                                     <td>
@@ -166,7 +197,7 @@
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
-                <form id="editBookForm" method="POST">
+                <form id="editBookForm" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PATCH')
                     <div class="modal-body p-4">
@@ -183,13 +214,14 @@
                                 <label class="form-label fw-semibold" style="color: #1a1a2e;">ISBN</label>
                                 <input type="text" name="isbn" class="form-control border-0" id="editIsbn" style="border-radius: 8px; background: #f8fafc;">
                             </div>
-                            <div class="col-md-6 d-flex align-items-end">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="available" id="editAvailable" style="border-color: #06b6d4;">
-                                    <label class="form-check-label fw-semibold ms-2" for="editAvailable" style="color: #1a1a2e;">
-                                        <i class="fas fa-check-circle me-1" style="color: #06b6d4;"></i>Buku Tersedia
-                                    </label>
-                                </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold" style="color: #1a1a2e;">Jumlah Stok</label>
+                                <input type="number" name="quantity" class="form-control border-0" id="editQuantity" min="1" required style="border-radius: 8px; background: #f8fafc;">
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label fw-semibold" style="color: #1a1a2e;">Gambar Buku (Opsional)</label>
+                                <input type="file" name="image" class="form-control border-0" id="editImage" accept="image/*" style="border-radius: 8px; background: #f8fafc;">
+                                <small class="text-muted">Biarkan kosong jika tidak ingin mengubah gambar</small>
                             </div>
                         </div>
                     </div>
@@ -207,20 +239,35 @@
     </div>
 
     <script>
+        // ISBN Generation Function
+        function generateISBN() {
+            const timestamp = Date.now().toString();
+            const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+            const isbn = timestamp.slice(-9) + random;
+            return isbn;
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
+            // ISBN Generator
+            document.getElementById('generateIsbn').addEventListener('click', function() {
+                document.getElementById('isbnInput').value = generateISBN();
+            });
             document.querySelectorAll('.edit-btn').forEach(button => {
                 button.addEventListener('click', function() {
                     const id = this.getAttribute('data-id');
                     const title = this.getAttribute('data-title');
                     const author = this.getAttribute('data-author');
                     const isbn = this.getAttribute('data-isbn');
-                    const available = this.getAttribute('data-available') === '1';
+                    const quantity = this.getAttribute('data-quantity');
+                    const image = this.getAttribute('data-image');
 
                     document.getElementById('editBookForm').action = `/admin/books/${id}`;
                     document.getElementById('editTitle').value = title;
                     document.getElementById('editAuthor').value = author;
                     document.getElementById('editIsbn').value = isbn;
-                    document.getElementById('editAvailable').checked = available;
+                    document.getElementById('editQuantity').value = quantity;
+                    // Clear the file input since we can't set a value for security reasons
+                    document.getElementById('editImage').value = '';
 
                     new bootstrap.Modal(document.getElementById('editBookModal')).show();
                 });
