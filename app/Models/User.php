@@ -21,6 +21,9 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'nik',
+        'phone',
+        'address',
     ];
 
     /**
@@ -45,5 +48,10 @@ class User extends Authenticatable
             'password' => 'hashed',
             'role' => 'string',
         ];
+    }
+
+    public function isProfileComplete()
+    {
+        return !empty($this->nik) && !empty($this->phone) && !empty($this->address);
     }
 }

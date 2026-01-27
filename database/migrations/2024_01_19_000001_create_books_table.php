@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('title');
             $table->string('author');
             $table->string('isbn')->nullable()->unique();
-            $table->boolean('available')->default(true);
+            $table->integer('quantity')->default(1);
+            $table->integer('available_quantity')->default(1);
             $table->timestamps();
         });
     }

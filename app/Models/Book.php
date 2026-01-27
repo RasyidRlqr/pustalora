@@ -13,14 +13,27 @@ class Book extends Model
         'title',
         'author',
         'isbn',
-        'available',
+        'image',
+        'quantity',
+        'available_quantity',
     ];
 
     protected function casts(): array
     {
         return [
-            'available' => 'boolean',
+            'quantity' => 'integer',
+            'available_quantity' => 'integer',
         ];
+    }
+
+    public function isAvailable()
+    {
+        return $this->available_quantity > 0;
+    }
+
+    public function getAvailableCopies()
+    {
+        return $this->available_quantity;
     }
 
     public function loans()
