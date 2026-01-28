@@ -1,14 +1,14 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="fw-bold" style="color: #1a1a2e;">
+        <h2 class="fw-bold" style="color: white;">
             <i class="fas fa-cog me-2" style="color: #06b6d4;"></i>Dashboard Admin
         </h2>
     </x-slot>
 
-    <div class="py-12" style="background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);">
+    <div class="py-12" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: white;">
         <div class="container">
             @if(session('success'))
-                <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert" style="border-left: 4px solid #06b6d4;">
+                <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert" style="border-left: 4px solid #06b6d4; color: white; background: rgba(34, 197, 94, 0.1); border-color: #22c55e;">
                     <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
@@ -56,8 +56,8 @@
             </div>
 
             <!-- Books Management -->
-            <div class="card shadow-lg border-0 mb-5" style="border-radius: 15px; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px);">
-                <div class="card-header border-0" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 15px 15px 0 0;">
+            <div class="card shadow-lg border-0 mb-5" style="border-radius: 15px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)); border: 1px solid rgba(6, 182, 212, 0.2); backdrop-filter: blur(10px);">
+                <div class="card-header border-0" style="background: rgba(255,255,255,0.1); color: white; border-radius: 15px 15px 0 0;">
                     <h5 class="mb-0">
                         <i class="fas fa-book me-2"></i>Kelola Koleksi Buku
                     </h5>
@@ -136,7 +136,7 @@
                 </div>
                 <div class="card-body p-4">
                     <div class="table-responsive">
-                        <table class="table table-hover">
+                        <table class="table table-hover" style="color: white;">
                             <thead style="background: linear-gradient(135deg, #06b6d4, #0891b2); color: white;">
                                 <tr>
                                     <th><i class="fas fa-hashtag me-1"></i>ID</th>
@@ -161,7 +161,7 @@
                                     <td class="fw-semibold">{{ $loan->book->title }}</td>
                                     <td>
                                         <span class="badge" style="background: linear-gradient(45deg, #8b5cf6, #7c3aed);">
-                                            <i class="fas fa-hashtag me-1"></i>{{ $loan->copy_number }}
+                                            <i class="fas fa-hashtag me-1"></i>{{ $loan->loan_code }}
                                         </span>
                                     </td>
                                     <td>{{ $loan->borrowed_at->format('d/m/Y') }}</td>
