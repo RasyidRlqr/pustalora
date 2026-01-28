@@ -14,13 +14,13 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     </head>
-    <body style="background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); min-height: 100vh;">
+    <body style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); min-height: 100vh; color: white;">
         <div class="min-vh-100">
             @include('layouts.navigation')
 
             <!-- Page Heading -->
             @isset($header)
-                <header style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)); border-bottom: 1px solid rgba(6, 182, 212, 0.2);">
+                <header style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)); border-bottom: 1px solid rgba(6, 182, 212, 0.2); color: white;">
                     <div class="container py-4">
                         {{ $header }}
                     </div>
