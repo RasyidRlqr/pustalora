@@ -18,4 +18,18 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
+    
+    # Disable mod_security for specific routes
+    <IfModule mod_security.c>
+        SecFilterScanPOST Off
+    </IfModule>
 </IfModule>
+
+# Disable directory listing
+Options -Indexes
+
+# Protect sensitive files
+<FilesMatch "^(\.env|composer\.json|composer\.lock|.*\.sql)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
