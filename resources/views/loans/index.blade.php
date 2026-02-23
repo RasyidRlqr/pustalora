@@ -139,7 +139,7 @@
                                 </td>
                                 <td>
                                     @if($loan->status === 'active')
-                                        <a href="{{ route('loans.return', $loan) }}" class="btn btn-success btn-sm" onclick="return confirm('Apakah Anda yakin ingin mengembalikan buku ini?');">
+                                        <a href="{{ route('loans.return', ['loan' => $loan->id]) }}" class="btn btn-success btn-sm" onclick="return confirm('Apakah Anda yakin ingin mengembalikan buku ini?');">
                                             <i class="bi bi-arrow-return-left me-1"></i>Kembalikan
                                         </a>
                                     @else
