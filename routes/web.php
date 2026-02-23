@@ -19,7 +19,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [LoanController::class, 'index'])->name('index');
         Route::get('/create/{book}', [LoanController::class, 'create'])->name('create');
         Route::post('/{book}', [LoanController::class, 'store'])->name('store');
-        Route::post('/{loan}/return', [LoanController::class, 'return'])->name('return');
+        Route::get('/{loan}/return', [LoanController::class, 'return'])->name('return');
     });
 
     Route::get('/profile', action: [ProfileController::class, 'edit'])->name('profile.edit');
@@ -44,7 +44,7 @@ Route::middleware('auth')->group(function () {
         // Loans Management
         Route::prefix('peminjaman')->name('loans.')->group(function () {
             Route::get('/', [AdminController::class, 'loansHistory'])->name('index');
-            Route::post('/{loan}/return', [AdminController::class, 'loansReturn'])->name('return');
+            Route::get('/{loan}/return', [AdminController::class, 'loansReturn'])->name('return');
         });
     });
 });

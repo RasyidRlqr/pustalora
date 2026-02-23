@@ -183,12 +183,9 @@
                                 </td>
                                 <td>
                                     @if($loan->status === 'active')
-                                        <form action="{{ route('admin.loans.return', $loan) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menandai buku ini sebagai dikembalikan?');">
-                                            @csrf
-                                            <button type="submit" class="btn btn-sm btn-success" title="Tandai Dikembalikan">
-                                                <i class="bi bi-check-circle"></i>
-                                            </button>
-                                        </form>
+                                        <a href="{{ route('admin.loans.return', $loan) }}" class="btn btn-sm btn-success" title="Tandai Dikembalikan" onclick="return confirm('Apakah Anda yakin ingin menandai buku ini sebagai dikembalikan?');">
+                                            <i class="bi bi-check-circle"></i>
+                                        </a>
                                     @else
                                         <span class="text-muted">
                                             <i class="bi bi-check2"></i>
