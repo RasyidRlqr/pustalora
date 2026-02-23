@@ -19,7 +19,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [LoanController::class, 'index'])->name('index');
         Route::get('/create/{book}', [LoanController::class, 'create'])->name('create');
         Route::post('/{book}', [LoanController::class, 'store'])->name('store');
-        Route::get('/{loan}/return', [LoanController::class, 'return'])->name('return');
+        Route::get('/kembalikan/{loan}', [LoanController::class, 'return'])->name('return');
     });
 
     Route::get('/profile', action: [ProfileController::class, 'edit'])->name('profile.edit');
