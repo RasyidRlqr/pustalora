@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="light-mode">
     <x-pustalora-navigation />
 
     <!-- Flash Messages -->
@@ -47,9 +47,9 @@
                         <div class="bg-purple-gradient rounded-3 p-2 me-3">
                             <i class="bi bi-book text-white fs-4"></i>
                         </div>
-                        <span class="fs-4 fw-bold text-purple">Pustalora</span>
+                        <span class="fs-4 fw-bold text-primary">Pustalora</span>
                     </div>
-                    <p class="text-muted">
+                    <p class="text-secondary">
                         Sistem peminjaman buku modern dan elegan untuk memudahkan Anda dalam mengelola dan meminjam buku favorit Anda.
                     </p>
                     <div class="d-flex gap-2 mt-3">
@@ -65,34 +65,34 @@
                     </div>
                 </div>
                 <div class="col-md-2 mb-4">
-                    <h5>Menu</h5>
+                    <h5 class="text-primary">Menu</h5>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><a href="{{ route('home') }}" class="text-muted text-decoration-none">Beranda</a></li>
-                        <li class="mb-2"><a href="{{ route('books.index') }}" class="text-muted text-decoration-none">Katalog Buku</a></li>
+                        <li class="mb-2"><a href="{{ route('home') }}" class="text-secondary text-decoration-none">Beranda</a></li>
+                        <li class="mb-2"><a href="{{ route('books.index') }}" class="text-secondary text-decoration-none">Katalog Buku</a></li>
                         @auth
-                            <li class="mb-2"><a href="{{ route('loans.index') }}" class="text-muted text-decoration-none">Peminjaman Saya</a></li>
+                            <li class="mb-2"><a href="{{ route('loans.index') }}" class="text-secondary text-decoration-none">Peminjaman Saya</a></li>
                         @endauth
                     </ul>
                 </div>
                 <div class="col-md-2 mb-4">
-                    <h5>Bantuan</h5>
+                    <h5 class="text-primary">Bantuan</h5>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#" class="text-muted text-decoration-none">Cara Peminjaman</a></li>
-                        <li class="mb-2"><a href="#" class="text-muted text-decoration-none">FAQ</a></li>
-                        <li class="mb-2"><a href="#" class="text-muted text-decoration-none">Kontak</a></li>
+                        <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Cara Peminjaman</a></li>
+                        <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">FAQ</a></li>
+                        <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Kontak</a></li>
                     </ul>
                 </div>
                 <div class="col-md-4 mb-4">
-                    <h5>Hubungi Kami</h5>
-                    <ul class="list-unstyled text-muted">
-                        <li class="mb-2"><i class="bi bi-geo-alt me-2"></i> Jakarta, Indonesia</li>
-                        <li class="mb-2"><i class="bi bi-envelope me-2"></i> info@pustalora.com</li>
-                        <li class="mb-2"><i class="bi bi-telephone me-2"></i> +62 21 1234 5678</li>
+                    <h5 class="text-primary">Hubungi Kami</h5>
+                    <ul class="list-unstyled text-secondary">
+                        <li class="mb-2"><i class="bi bi-geo-alt me-2 text-primary"></i> Jakarta, Indonesia</li>
+                        <li class="mb-2"><i class="bi bi-envelope me-2 text-primary"></i> info@pustalora.com</li>
+                        <li class="mb-2"><i class="bi bi-telephone me-2 text-primary"></i> +62 21 1234 5678</li>
                     </ul>
                 </div>
             </div>
             <hr class="my-4">
-            <div class="text-center text-muted">
+            <div class="text-center text-secondary">
                 <p class="mb-0">&copy; {{ date('Y') }} Pustalora. All rights reserved.</p>
             </div>
         </div>

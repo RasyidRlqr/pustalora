@@ -14,68 +14,60 @@
                 </ol>
             </nav>
             <h1 class="page-title">Dashboard Admin</h1>
-            <p class="text-muted">Selamat datang, {{ auth()->user()->name }}!</p>
+            <p class="text-secondary">Selamat datang, {{ auth()->user()->name }}!</p>
         </div>
     </div>
 
     <!-- Stats Cards -->
     <div class="row g-4 mb-4">
         <div class="col-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="bg-purple-gradient rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 48px; height: 48px;">
-                            <i class="bi bi-book text-white"></i>
-                        </div>
-                        <div>
-                            <h6 class="card-subtitle mb-1 text-muted">Total Buku</h6>
-                            <h3 class="card-title mb-0">{{ $stats['total_books'] }}</h3>
-                        </div>
+            <div class="stats-card">
+                <div class="d-flex align-items-center">
+                    <div class="stats-icon bg-purple-gradient me-3">
+                        <i class="bi bi-book text-white"></i>
+                    </div>
+                    <div>
+                        <h6 class="stats-label mb-1">Total Buku</h6>
+                        <h3 class="stats-value mb-0">{{ $stats['total_books'] }}</h3>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="bg-success rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 48px; height: 48px;">
-                            <i class="bi bi-bookmark-check text-white"></i>
-                        </div>
-                        <div>
-                            <h6 class="card-subtitle mb-1 text-muted">Total Eksemplar</h6>
-                            <h3 class="card-title mb-0">{{ $stats['total_copies'] }}</h3>
-                        </div>
+            <div class="stats-card">
+                <div class="d-flex align-items-center">
+                    <div class="stats-icon bg-success me-3">
+                        <i class="bi bi-bookmark-check text-white"></i>
+                    </div>
+                    <div>
+                        <h6 class="stats-label mb-1">Total Eksemplar</h6>
+                        <h3 class="stats-value mb-0">{{ $stats['total_copies'] }}</h3>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="bg-info rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 48px; height: 48px;">
-                            <i class="bi bi-bookmark-check text-white"></i>
-                        </div>
-                        <div>
-                            <h6 class="card-subtitle mb-1 text-muted">Peminjaman Aktif</h6>
-                            <h3 class="card-title mb-0">{{ $stats['active_loans'] }}</h3>
-                        </div>
+            <div class="stats-card">
+                <div class="d-flex align-items-center">
+                    <div class="stats-icon bg-info me-3">
+                        <i class="bi bi-arrow-repeat text-white"></i>
+                    </div>
+                    <div>
+                        <h6 class="stats-label mb-1">Peminjaman Aktif</h6>
+                        <h3 class="stats-value mb-0">{{ $stats['active_loans'] }}</h3>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="bg-warning rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 48px; height: 48px;">
-                            <i class="bi bi-people text-white"></i>
-                        </div>
-                        <div>
-                            <h6 class="card-subtitle mb-1 text-muted">Total Pengguna</h6>
-                            <h3 class="card-title mb-0">{{ $stats['total_users'] }}</h3>
-                        </div>
+            <div class="stats-card">
+                <div class="d-flex align-items-center">
+                    <div class="stats-icon bg-warning me-3">
+                        <i class="bi bi-people text-dark"></i>
+                    </div>
+                    <div>
+                        <h6 class="stats-label mb-1">Total Pengguna</h6>
+                        <h3 class="stats-value mb-0">{{ $stats['total_users'] }}</h3>
                     </div>
                 </div>
             </div>
@@ -109,7 +101,7 @@
                                     <tr>
                                         <td>
                                             <strong>{{ $loan->book->title }}</strong>
-                                            <br><small class="text-muted">{{ $loan->bookCopy->copy_code }}</small>
+                                            <br><small class="text-secondary">{{ $loan->bookCopy->copy_code }}</small>
                                         </td>
                                         <td>{{ $loan->user->name }}</td>
                                         <td>{{ $loan->loan_date->format('d/m/Y') }}</td>
@@ -136,7 +128,7 @@
                             </table>
                         </div>
                     @else
-                        <p class="text-muted mb-0">Belum ada peminjaman</p>
+                        <p class="text-secondary mb-0">Belum ada peminjaman</p>
                     @endif
                 </div>
             </div>
@@ -168,7 +160,7 @@
 
             <!-- Overdue Loans Alert -->
             @if($overdueLoans->count() > 0)
-            <div class="card mt-4">
+            <div class="card mt-4 border-danger">
                 <div class="card-header bg-danger text-white">
                     <h5 class="card-title mb-0"><i class="bi bi-exclamation-triangle me-2"></i>Peminjaman Terlambat</h5>
                 </div>

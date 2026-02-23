@@ -39,7 +39,7 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
-     */visu
+     */
     public function down(): void
     {
         Schema::dropIfExists('users');

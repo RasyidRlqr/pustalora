@@ -19,7 +19,11 @@
         <div class="col-lg-5 mb-4">
             <div class="card">
                 @if($book->cover_image)
-                    <img src="{{ asset('storage/' . $book->cover_image) }}" alt="{{ $book->title }}" class="card-img-top">
+                    @if(str_starts_with($book->cover_image, 'http'))
+                        <img src="{{ $book->cover_image }}" alt="{{ $book->title }}" class="card-img-top">
+                    @else
+                        <img src="{{ asset($book->cover_image) }}" alt="{{ $book->title }}" class="card-img-top">
+                    @endif
                 @else
                     <div class="bg-purple-gradient d-flex align-items-center justify-content-center" style="height: 300px;">
                         <i class="bi bi-book text-white" style="font-size: 5rem;"></i>

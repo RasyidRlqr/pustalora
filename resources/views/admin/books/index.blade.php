@@ -82,7 +82,11 @@
                             <tr>
                                 <td>
                                     @if($book->cover_image)
-                                        <img src="{{ asset('storage/' . $book->cover_image) }}" alt="{{ $book->title }}" class="rounded" style="width: 50px; height: 70px; object-fit: cover;">
+                                        @if(str_starts_with($book->cover_image, 'http'))
+                                            <img src="{{ $book->cover_image }}" alt="{{ $book->title }}" class="rounded" style="width: 50px; height: 70px; object-fit: cover;">
+                                        @else
+                                            <img src="{{ asset($book->cover_image) }}" alt="{{ $book->title }}" class="rounded" style="width: 50px; height: 70px; object-fit: cover;">
+                                        @endif
                                     @else
                                         <div class="bg-purple-gradient rounded d-flex align-items-center justify-content-center" style="width: 50px; height: 70px;">
                                             <i class="bi bi-book text-white"></i>

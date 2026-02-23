@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
-<body class="d-flex align-items-center justify-content-center min-vh-100">
+<body class="guest-layout d-flex align-items-center justify-content-center min-vh-100 light-mode">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6 col-lg-5">
@@ -22,7 +22,7 @@
                         <div class="bg-purple-gradient rounded-3 d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
                             <i class="bi bi-book text-white fs-2"></i>
                         </div>
-                        <h2 class="text-purple fw-bold">Pustalora</h2>
+                        <h2 class="text-primary fw-bold">Pustalora</h2>
                     </a>
                 </div>
 
@@ -35,7 +35,7 @@
 
                 <!-- Back to Home -->
                 <div class="text-center mt-4">
-                    <a href="{{ route('home') }}" class="text-decoration-none text-muted">
+                    <a href="{{ route('home') }}" class="text-decoration-none text-secondary">
                         <i class="bi bi-arrow-left me-1"></i>Kembali ke Beranda
                     </a>
                 </div>
