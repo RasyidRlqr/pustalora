@@ -137,7 +137,11 @@
                                 <td>
                                     <div class="d-flex align-items-center">
                                         @if($loan->book->cover_image)
-                                            <img src="{{ asset('storage/' . $loan->book->cover_image) }}" alt="{{ $loan->book->title }}" class="rounded me-3" style="width: 40px; height: 56px; object-fit: cover;">
+                                            @if(str_starts_with($loan->book->cover_image, 'http'))
+                                                <img src="{{ $loan->book->cover_image }}" alt="{{ $loan->book->title }}" class="rounded me-3" style="width: 40px; height: 56px; object-fit: cover;">
+                                            @else
+                                                <img src="{{ asset($loan->book->cover_image) }}" alt="{{ $loan->book->title }}" class="rounded me-3" style="width: 40px; height: 56px; object-fit: cover;">
+                                            @endif
                                         @else
                                             <div class="bg-purple-gradient rounded d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 56px;">
                                                 <i class="bi bi-book text-white"></i>

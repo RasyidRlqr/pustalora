@@ -14,7 +14,7 @@
                 </ol>
             </nav>
             <h1 class="page-title">Katalog Buku</h1>
-            <p class="text-muted">Jelajahi koleksi buku yang tersedia di Pustalora</p>
+            <p class="text-secondary">Jelajahi koleksi buku yang tersedia di Pustalora</p>
         </div>
     </div>
 
@@ -84,7 +84,7 @@
         <div class="col-lg-9">
             <!-- Results Info -->
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <p class="mb-0 text-muted">
+                <p class="mb-0 text-secondary">
                     Menampilkan <strong>{{ $books->count() }}</strong> dari <strong>{{ $books->total() }}</strong> buku
                 </p>
                 <div class="btn-group" role="group">
@@ -104,24 +104,28 @@
                         <div class="card book-card h-100">
                             <div class="position-relative">
                                 @if($book->cover_image)
-                                    <img src="{{ asset('storage/' . $book->cover_image) }}" alt="{{ $book->title }}" class="card-img-top">
+                                    @if(str_starts_with($book->cover_image, 'http'))
+                                        <img src="{{ $book->cover_image }}" alt="{{ $book->title }}" class="card-img-top">
+                                    @else
+                                        <img src="{{ asset($book->cover_image) }}" alt="{{ $book->title }}" class="card-img-top">
+                                    @endif
                                 @else
                                     <div class="bg-purple-gradient d-flex align-items-center justify-content-center" style="height: 250px;">
                                         <i class="bi bi-book text-white" style="font-size: 4rem;"></i>
                                     </div>
                                 @endif
-                                @if($book->isAvailable())
-                                    <span class="status-available position-absolute top-3 end-3">
-                                        <i class="bi bi-check-circle me-1"></i>Tersedia
-                                    </span>
-                                @else
-                                    <span class="status-borrowed position-absolute top-3 end-3">
-                                        <i class="bi bi-x-circle me-1"></i>Tidak Tersedia
-                                    </span>
-                                @endif
                                 @if($book->is_featured)
                                     <span class="badge badge-warning position-absolute top-3 start-3">
                                         <i class="bi bi-star-fill me-1"></i>Pilihan
+                                    </span>
+                                @endif
+                                @if($book->isAvailable())
+                                    <span class="status-available position-absolute {{ $book->is_featured ? 'top-6' : 'top-3' }} end-3">
+                                        <i class="bi bi-check-circle me-1"></i>Tersedia
+                                    </span>
+                                @else
+                                    <span class="status-borrowed position-absolute {{ $book->is_featured ? 'top-6' : 'top-3' }} end-3">
+                                        <i class="bi bi-x-circle me-1"></i>Tidak Tersedia
                                     </span>
                                 @endif
                             </div>
@@ -130,13 +134,13 @@
                                     <span class="badge badge-primary mb-2">{{ $book->category->name }}</span>
                                 @endif
                                 <h5 class="book-title">{{ $book->title }}</h5>
-                                <p class="book-author">{{ $book->author }}</p>
+                                <p class="book-author" style="color: var(--text-secondary) !important;">{{ $book->author }}</p>
                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <div class="book-rating">
+                                    <div class="book-rating" style="color: var(--warning-color) !important;">
                                         <i class="bi bi-star-fill"></i>
-                                        <span>{{ $book->rating }}</span>
+                                        <span style="color: var(--text-primary) !important;">{{ $book->rating }}</span>
                                     </div>
-                                    <small class="text-muted">
+                                    <small class="text-secondary">
                                         <i class="bi bi-book me-1"></i>{{ $book->total_copies }} eksemplar
                                     </small>
                                 </div>
@@ -164,9 +168,9 @@
                 @endif
             @else
                 <div class="text-center py-5">
-                    <i class="bi bi-book text-muted" style="font-size: 5rem;"></i>
+                    <i class="bi bi-book text-secondary" style="font-size: 5rem;"></i>
                     <h4 class="mt-3">Tidak ada buku ditemukan</h4>
-                    <p class="text-muted">Coba ubah filter atau kata kunci pencarian Anda</p>
+                    <p class="text-secondary">Coba ubah filter atau kata kunci pencarian Anda</p>
                     <a href="{{ route('books.index') }}" class="btn btn-primary">
                         <i class="bi bi-arrow-counterclockwise me-2"></i>Reset Filter
                     </a>

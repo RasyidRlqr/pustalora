@@ -18,7 +18,11 @@
         <div class="col-lg-4 mb-4">
             <div class="card">
                 @if($book->cover_image)
-                    <img src="{{ asset('storage/' . $book->cover_image) }}" alt="{{ $book->title }}" class="card-img-top">
+                    @if(str_starts_with($book->cover_image, 'http'))
+                        <img src="{{ $book->cover_image }}" alt="{{ $book->title }}" class="card-img-top">
+                    @else
+                        <img src="{{ asset($book->cover_image) }}" alt="{{ $book->title }}" class="card-img-top">
+                    @endif
                 @else
                     <div class="bg-purple-gradient d-flex align-items-center justify-content-center" style="height: 400px;">
                         <i class="bi bi-book text-white" style="font-size: 6rem;"></i>
@@ -58,37 +62,37 @@
                     <div class="row g-3 mb-4">
                         <div class="col-md-6">
                             <div class="d-flex align-items-center">
-                                <i class="bi bi-hash text-muted me-2"></i>
+                                <i class="bi bi-hash text-secondary me-2"></i>
                                 <div>
-                                    <small class="text-muted d-block">Kode Buku</small>
-                                    <strong>{{ $book->unique_code }}</strong>
+                                    <small class="text-secondary d-block">Kode Buku</small>
+                                    <strong style="color: var(--text-primary) !important;">{{ $book->unique_code }}</strong>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="d-flex align-items-center">
-                                <i class="bi bi-calendar text-muted me-2"></i>
+                                <i class="bi bi-calendar text-secondary me-2"></i>
                                 <div>
-                                    <small class="text-muted d-block">Tahun Terbit</small>
-                                    <strong>{{ $book->published_year }}</strong>
+                                    <small class="text-secondary d-block">Tahun Terbit</small>
+                                    <strong style="color: var(--text-primary) !important;">{{ $book->published_year }}</strong>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="d-flex align-items-center">
-                                <i class="bi bi-book text-muted me-2"></i>
+                                <i class="bi bi-book text-secondary me-2"></i>
                                 <div>
-                                    <small class="text-muted d-block">Total Eksemplar</small>
-                                    <strong>{{ $book->total_copies }}</strong>
+                                    <small class="text-secondary d-block">Total Eksemplar</small>
+                                    <strong style="color: var(--text-primary) !important;">{{ $book->total_copies }}</strong>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="d-flex align-items-center">
-                                <i class="bi bi-star text-muted me-2"></i>
+                                <i class="bi bi-star text-secondary me-2"></i>
                                 <div>
-                                    <small class="text-muted d-block">Rating</small>
-                                    <strong>{{ $book->rating }}/5.0</strong>
+                                    <small class="text-secondary d-block">Rating</small>
+                                    <strong style="color: var(--text-primary) !important;">{{ $book->rating }}/5.0</strong>
                                 </div>
                             </div>
                         </div>
@@ -97,7 +101,7 @@
                     <hr>
 
                     <h5 class="mb-3">Sinopsis</h5>
-                    <p class="text-muted">{{ $book->description }}</p>
+                    <p style="color: var(--text-primary) !important;">{{ $book->description }}</p>
 
                     <div class="d-flex gap-3 mt-4">
                         @if($book->isAvailable() && auth()->check())
@@ -172,7 +176,7 @@
                             </table>
                         </div>
                     @else
-                        <p class="text-muted mb-0">Tidak ada eksemplar tersedia</p>
+                        <p class="text-secondary mb-0">Tidak ada eksemplar tersedia</p>
                     @endif
                 </div>
             </div>

@@ -68,7 +68,7 @@
 </section>
 
 <!-- Features Section -->
-<section class="section bg-white">
+<section class="section">
     <div class="container">
         <div class="text-center mb-5">
             <h2 class="section-title">Mengapa Pustalora?</h2>
@@ -126,24 +126,28 @@
                 <div class="card book-card h-100">
                     <div class="position-relative">
                         @if($book->cover_image)
-                            <img src="{{ asset('storage/' . $book->cover_image) }}" alt="{{ $book->title }}" class="card-img-top">
+                            @if(str_starts_with($book->cover_image, 'http'))
+                                <img src="{{ $book->cover_image }}" alt="{{ $book->title }}" class="card-img-top">
+                            @else
+                                <img src="{{ asset($book->cover_image) }}" alt="{{ $book->title }}" class="card-img-top">
+                            @endif
                         @else
                             <div class="bg-purple-gradient d-flex align-items-center justify-content-center" style="height: 300px;">
                                 <i class="bi bi-book text-white" style="font-size: 5rem;"></i>
                             </div>
                         @endif
-                        @if($book->isAvailable())
-                            <span class="status-available position-absolute top-3 end-3">
-                                <i class="bi bi-check-circle me-1"></i>Tersedia
-                            </span>
-                        @else
-                            <span class="status-borrowed position-absolute top-3 end-3">
-                                <i class="bi bi-x-circle me-1"></i>Tidak Tersedia
-                            </span>
-                        @endif
                         @if($book->is_featured)
                             <span class="badge badge-warning position-absolute top-3 start-3">
                                 <i class="bi bi-star-fill me-1"></i>Pilihan
+                            </span>
+                        @endif
+                        @if($book->isAvailable())
+                            <span class="status-available position-absolute {{ $book->is_featured ? 'top-6' : 'top-3' }} end-3">
+                                <i class="bi bi-check-circle me-1"></i>Tersedia
+                            </span>
+                        @else
+                            <span class="status-borrowed position-absolute {{ $book->is_featured ? 'top-6' : 'top-3' }} end-3">
+                                <i class="bi bi-x-circle me-1"></i>Tidak Tersedia
                             </span>
                         @endif
                     </div>
@@ -152,11 +156,11 @@
                             <span class="badge badge-primary mb-2">{{ $book->category->name }}</span>
                         @endif
                         <h5 class="book-title">{{ $book->title }}</h5>
-                        <p class="book-author">{{ $book->author }}</p>
+                        <p class="book-author" style="color: var(--text-secondary) !important;">{{ $book->author }}</p>
                         <div class="d-flex justify-content-between align-items-center">
-                            <div class="book-rating">
+                            <div class="book-rating" style="color: var(--warning-color) !important;">
                                 <i class="bi bi-star-fill"></i>
-                                <span>{{ $book->rating }}</span>
+                                <span style="color: var(--text-primary) !important;">{{ $book->rating }}</span>
                             </div>
                             <a href="{{ route('books.show', $book) }}" class="btn btn-sm btn-outline-primary">
                                 Lihat Detail <i class="bi bi-arrow-right ms-1"></i>
@@ -178,7 +182,7 @@
 
 <!-- Categories Section -->
 @if($categories->count() > 0)
-<section class="section bg-white">
+<section class="section">
     <div class="container">
         <div class="text-center mb-5">
             <h2 class="section-title">Kategori Buku</h2>

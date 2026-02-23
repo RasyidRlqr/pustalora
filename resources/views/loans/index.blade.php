@@ -14,7 +14,7 @@
                 </ol>
             </nav>
             <h1 class="page-title">Peminjaman Saya</h1>
-            <p class="text-muted">Kelola buku yang Anda pinjam</p>
+            <p class="text-secondary">Kelola buku yang Anda pinjam</p>
         </div>
     </div>
 
@@ -95,7 +95,11 @@
                                 <td>
                                     <div class="d-flex align-items-center">
                                         @if($loan->book->cover_image)
-                                            <img src="{{ asset('storage/' . $loan->book->cover_image) }}" alt="{{ $loan->book->title }}" class="rounded me-3" style="width: 50px; height: 70px; object-fit: cover;">
+                                            @if(str_starts_with($loan->book->cover_image, 'http'))
+                                                <img src="{{ $loan->book->cover_image }}" alt="{{ $loan->book->title }}" class="rounded me-3" style="width: 50px; height: 70px; object-fit: cover;">
+                                            @else
+                                                <img src="{{ asset($loan->book->cover_image) }}" alt="{{ $loan->book->title }}" class="rounded me-3" style="width: 50px; height: 70px; object-fit: cover;">
+                                            @endif
                                         @else
                                             <div class="bg-purple-gradient rounded d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 70px;">
                                                 <i class="bi bi-book text-white"></i>
@@ -103,7 +107,7 @@
                                         @endif
                                         <div>
                                             <h6 class="mb-0">{{ $loan->book->title }}</h6>
-                                            <small class="text-muted">{{ $loan->book->author }}</small>
+                                            <small class="text-secondary">{{ $loan->book->author }}</small>
                                         </div>
                                     </div>
                                 </td>

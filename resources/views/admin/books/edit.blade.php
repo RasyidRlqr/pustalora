@@ -77,7 +77,7 @@
                                         @if(str_starts_with($book->cover_image, 'http'))
                                             <img src="{{ $book->cover_image }}" alt="{{ $book->title }}" class="rounded" style="max-height: 200px;">
                                         @else
-                                            <img src="{{ asset('storage/' . $book->cover_image) }}" alt="{{ $book->title }}" class="rounded" style="max-height: 200px;">
+                                            <img src="{{ asset($book->cover_image) }}" alt="{{ $book->title }}" class="rounded" style="max-height: 200px;">
                                         @endif
                                     </div>
                                 </div>

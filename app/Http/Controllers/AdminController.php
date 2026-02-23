@@ -93,10 +93,18 @@ class AdminController extends Controller
             'cover_image_url' => 'nullable|url|max:500',
         ]);
 
-        // Handle cover image
+        // Handle cover image - store directly in public folder
         $coverImagePath = null;
         if ($request->cover_image_type === 'file' && $request->hasFile('cover_image_file')) {
-            $coverImagePath = $request->file('cover_image_file')->store('book-covers', 'public');
+            $file = $request->file('cover_image_file');
+            $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            // Store directly in public/book-covers folder
+            $destinationPath = public_path('book-covers');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+            $file->move($destinationPath, $fileName);
+            $coverImagePath = 'book-covers/' . $fileName;
         } elseif ($request->cover_image_type === 'url' && $request->filled('cover_image_url')) {
             $coverImagePath = $request->cover_image_url;
         }
@@ -159,26 +167,44 @@ class AdminController extends Controller
             'cover_image_url' => 'nullable|url|max:500',
         ]);
 
-        // Handle cover image update
+        // Handle cover image update - store directly in public folder
         $coverImagePath = $book->cover_image;
         if ($request->filled('cover_image_type')) {
             if ($request->cover_image_type === 'file' && $request->hasFile('cover_image_file')) {
-                // Delete old image if it's a stored file
+                // Delete old image if it's a stored file (check both public and storage paths)
                 if ($book->cover_image && !str_starts_with($book->cover_image, 'http')) {
-                    $oldPath = storage_path('app/public/' . $book->cover_image);
-                    if (file_exists($oldPath)) {
-                        unlink($oldPath);
+                    // Check public folder first
+                    $oldPublicPath = public_path($book->cover_image);
+                    if (file_exists($oldPublicPath)) {
+                        unlink($oldPublicPath);
+                    }
+                    // Also check storage folder for legacy images
+                    $oldStoragePath = storage_path('app/public/' . $book->cover_image);
+                    if (file_exists($oldStoragePath)) {
+                        unlink($oldStoragePath);
                     }
                 }
-                $coverImagePath = $request->file('cover_image_file')->store('book-covers', 'public');
+                // Store new image in public folder
+                $file = $request->file('cover_image_file');
+                $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                $destinationPath = public_path('book-covers');
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true);
+                }
+                $file->move($destinationPath, $fileName);
+                $coverImagePath = 'book-covers/' . $fileName;
             } elseif ($request->cover_image_type === 'url' && $request->filled('cover_image_url')) {
                 $coverImagePath = $request->cover_image_url;
             } elseif ($request->cover_image_type === 'none') {
                 // Delete old image if it's a stored file
                 if ($book->cover_image && !str_starts_with($book->cover_image, 'http')) {
-                    $oldPath = storage_path('app/public/' . $book->cover_image);
-                    if (file_exists($oldPath)) {
-                        unlink($oldPath);
+                    $oldPublicPath = public_path($book->cover_image);
+                    if (file_exists($oldPublicPath)) {
+                        unlink($oldPublicPath);
+                    }
+                    $oldStoragePath = storage_path('app/public/' . $book->cover_image);
+                    if (file_exists($oldStoragePath)) {
+                        unlink($oldStoragePath);
                     }
                 }
                 $coverImagePath = null;
