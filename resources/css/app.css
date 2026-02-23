@@ -433,6 +433,17 @@ body.light-mode .btn-outline-success:hover {
     color: white !important;
 }
 
+/* Make sure admin action buttons are always visible */
+.btn-outline-success {
+    color: #10b981 !important;
+    border-color: #10b981 !important;
+}
+
+.btn-outline-success:hover {
+    background: #10b981 !important;
+    color: white !important;
+}
+
 body.light-mode .btn-outline-danger {
     color: #ef4444 !important;
     border-color: #ef4444 !important;
