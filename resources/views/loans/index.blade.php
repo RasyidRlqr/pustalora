@@ -139,12 +139,9 @@
                                 </td>
                                 <td>
                                     @if($loan->status === 'active')
-                                        <form action="{{ route('loans.return', $loan) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin mengembalikan buku ini?');">
-                                            @csrf
-                                            <button type="submit" class="btn btn-success btn-sm">
-                                                <i class="bi bi-arrow-return-left me-1"></i>Kembalikan
-                                            </button>
-                                        </form>
+                                        <a href="{{ route('loans.return', $loan) }}" class="btn btn-success btn-sm" onclick="return confirm('Apakah Anda yakin ingin mengembalikan buku ini?');">
+                                            <i class="bi bi-arrow-return-left me-1"></i>Kembalikan
+                                        </a>
                                     @else
                                         <span class="text-muted">
                                             <i class="bi bi-check2"></i> Selesai
