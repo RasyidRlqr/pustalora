@@ -41,8 +41,16 @@ class LoanController extends Controller
 
         $bookCopy = BookCopy::find($request->book_copy_id);
 
-        if (!$bookCopy || $bookCopy->book_id !== $book->id || !$bookCopy->isAvailable()) {
-            return redirect()->back()->with('error', 'Eksemplar buku yang dipilih tidak tersedia.');
+        if (!$bookCopy) {
+            return redirect()->back()->with('error', 'Eksemplar buku tidak ditemukan.');
+        }
+        
+        if ($bookCopy->book_id != $book->id) {
+            return redirect()->back()->with('error', 'Eksemplar tidak cocok dengan buku yang dipilih.');
+        }
+        
+        if (!$bookCopy->isAvailable()) {
+            return redirect()->back()->with('error', 'Eksemplar buku sudah dipinjam.');
         }
 
         $loanDate = \Carbon\Carbon::parse($request->loan_date);

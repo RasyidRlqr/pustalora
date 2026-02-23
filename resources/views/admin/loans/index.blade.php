@@ -185,7 +185,6 @@
                                     @if($loan->status === 'active')
                                         <form action="{{ route('admin.loans.return', $loan) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menandai buku ini sebagai dikembalikan?');">
                                             @csrf
-                                            @method('PUT')
                                             <button type="submit" class="btn btn-sm btn-success" title="Tandai Dikembalikan">
                                                 <i class="bi bi-check-circle"></i>
                                             </button>
