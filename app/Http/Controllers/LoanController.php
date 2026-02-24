@@ -77,9 +77,9 @@ class LoanController extends Controller
 
     public function return(Loan $loan)
     {
-        if ($loan->user_id !== Auth::id()) {
-            abort(403);
-        }
+        if ((int) $loan->user_id !== (int) Auth::id()) {
+        abort(403);
+    }
 
         if ($loan->status !== 'active') {
             return redirect()->back()->with('error', 'Peminjaman ini sudah dikembalikan.');
