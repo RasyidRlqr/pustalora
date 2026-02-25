@@ -96,6 +96,7 @@
                         <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Sedang Dipinjam</option>
                         <option value="returned" {{ request('status') == 'returned' ? 'selected' : '' }}>Sudah Dikembalikan</option>
                         <option value="overdue" {{ request('status') == 'overdue' ? 'selected' : '' }}>Terlambat</option>
+                        <option value="unpaid_fine" {{ request('status') == 'unpaid_fine' ? 'selected' : '' }}>Denda Belum Lunas</option>
                     </select>
                 </div>
                 <div class="col-md-3">
@@ -127,6 +128,7 @@
                                 <th>Tanggal Pinjam</th>
                                 <th>Tenggat</th>
                                 <th>Tanggal Kembali</th>
+                                <th>Denda</th>
                                 <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
@@ -165,6 +167,18 @@
                                     @endif
                                 </td>
                                 <td>
+                                    @if($loan->fine_amount > 0)
+                                        <span class="text-danger fw-bold">Rp {{ number_format($loan->fine_amount, 0, ',', '.') }}</span>
+                                        @if(!$loan->fine_paid)
+                                            <br><small class="text-warning"><i class="bi bi-exclamation-triangle"></i> Belum lunas</small>
+                                        @else
+                                            <br><small class="text-success"><i class="bi bi-check-circle"></i> Lunas</small>
+                                        @endif
+                                    @else
+                                        <span class="text-muted">-</span>
+                                    @endif
+                                </td>
+                                <td>
                                     @if($loan->status === 'active')
                                         @if($loan->isOverdue())
                                             <span class="status-overdue">
@@ -186,6 +200,13 @@
                                         <a href="{{ route('admin.loans.return', $loan) }}" class="btn btn-sm btn-success" title="Tandai Dikembalikan" onclick="return confirm('Apakah Anda yakin ingin menandai buku ini sebagai dikembalikan?');">
                                             <i class="bi bi-check-circle"></i>
                                         </a>
+                                    @elseif($loan->fine_amount > 0 && !$loan->fine_paid)
+                                        <form action="{{ route('admin.loans.pay-fine', $loan) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-warning" title="Tandai Denda Lunas" onclick="return confirm('Apakah denda sudah dibayar?');">
+                                                <i class="bi bi-currency-dollar"></i> Sudah Bayar
+                                            </button>
+                                        </form>
                                     @else
                                         <span class="text-muted">
                                             <i class="bi bi-check2"></i>

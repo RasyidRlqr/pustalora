@@ -74,6 +74,55 @@
         </div>
     </div>
 
+    <!-- Fine Stats -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="card border-warning">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-warning rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 48px; height: 48px;">
+                            <i class="bi bi-currency-dollar text-dark"></i>
+                        </div>
+                        <div>
+                            <h6 class="text-muted mb-1">Total Denda</h6>
+                            <h4 class="mb-0">Rp {{ number_format($stats['total_fines'], 0, ',', '.') }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-danger">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-danger rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 48px; height: 48px;">
+                            <i class="bi bi-exclamation-circle text-white"></i>
+                        </div>
+                        <div>
+                            <h6 class="text-muted mb-1">Denda Belum Lunas</h6>
+                            <h4 class="mb-0">{{ $stats['unpaid_fines'] }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-success">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-success rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 48px; height: 48px;">
+                            <i class="bi bi-check-circle text-white"></i>
+                        </div>
+                        <div>
+                            <h6 class="text-muted mb-1">Denda Lunas</h6>
+                            <h4 class="mb-0">{{ $stats['paid_fines'] }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row g-4">
         <!-- Recent Loans -->
         <div class="col-lg-8">

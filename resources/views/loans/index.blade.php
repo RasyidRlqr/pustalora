@@ -20,7 +20,7 @@
 
     <!-- Stats Cards -->
     <div class="row g-4 mb-4">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
@@ -35,7 +35,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
@@ -50,7 +50,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
@@ -60,6 +60,21 @@
                         <div>
                             <h6 class="card-subtitle mb-1 text-muted">Sudah Dikembalikan</h6>
                             <h3 class="card-title mb-0">{{ $loans->where('status', 'returned')->count() }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card {{ $loans->where('fine_paid', false)->where('fine_amount', '>', 0)->count() > 0 ? 'border-warning' : '' }}">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-warning rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 48px; height: 48px;">
+                            <i class="bi bi-currency-dollar text-white"></i>
+                        </div>
+                        <div>
+                            <h6 class="card-subtitle mb-1 text-muted">Total Denda</h6>
+                            <h3 class="card-title mb-0">Rp {{ number_format($loans->sum('fine_amount'), 0, ',', '.') }}</h3>
                         </div>
                     </div>
                 </div>
@@ -85,6 +100,7 @@
                                 <th>Kode Eksemplar</th>
                                 <th>Tanggal Pinjam</th>
                                 <th>Tanggal Kembali</th>
+                                <th>Denda</th>
                                 <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
@@ -121,11 +137,29 @@
                                     @endif
                                 </td>
                                 <td>
+                                    @if($loan->fine_amount > 0)
+                                        <span class="text-danger fw-bold">Rp {{ number_format($loan->fine_amount, 0, ',', '.') }}</span>
+                                        @if(!$loan->fine_paid)
+                                            <br><small class="text-warning"><i class="bi bi-exclamation-triangle"></i> Belum dibayar</small>
+                                        @else
+                                            <br><small class="text-success"><i class="bi bi-check-circle"></i> Lunas</small>
+                                        @endif
+                                    @else
+                                        <span class="text-muted">-</span>
+                                    @endif
+                                </td>
+                                <td>
                                     @if($loan->status === 'active')
                                         @if($loan->isOverdue())
+                                            @php
+                                                $daysOverdue = now()->diffInDays($loan->due_date, true); // Always positive
+                                                $daysOverdue = round($daysOverdue); // Round to integer
+                                                $estimatedFine = ceil($daysOverdue / 3) * 1000;
+                                            @endphp
                                             <span class="status-overdue">
-                                                <i class="bi bi-exclamation-triangle me-1"></i>Terlambat
+                                                <i class="bi bi-exclamation-triangle me-1"></i>Terlambat ({{ $daysOverdue }} hari)
                                             </span>
+                                            <br><small class="text-warning">Est. Denda: Rp {{ number_format($estimatedFine, 0, ',', '.') }}</small>
                                         @else
                                             <span class="status-borrowed">
                                                 <i class="bi bi-book me-1"></i>Dipinjam

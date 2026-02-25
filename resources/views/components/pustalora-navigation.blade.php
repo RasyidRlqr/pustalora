@@ -20,15 +20,25 @@
                 </li>
                 @auth
                     <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
+                            <i class="bi bi-speedometer2 me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('loans.*') ? 'active' : '' }}" href="{{ route('loans.index') }}">
                             <i class="bi bi-bookmark me-1"></i>Peminjaman Saya
                         </a>
                     </li>
                     @if(auth()->user()->role === 'admin')
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.*') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-gear me-1"></i>Admin
                             </a>
+                            <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                                <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a></li>
+                                <li><a class="dropdown-item" href="{{ route('admin.books.index') }}"><i class="bi bi-book me-2"></i>Kelola Buku</a></li>
+                                <li><a class="dropdown-item" href="{{ route('admin.loans.index') }}"><i class="bi bi-bookmark me-2"></i>Kelola Peminjaman</a></li>
+                            </ul>
                         </li>
                     @endif
                 @endauth

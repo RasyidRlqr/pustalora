@@ -15,6 +15,9 @@ Route::prefix('buku')->name('books.')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    // User Dashboard
+    Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+
     Route::prefix('peminjaman')->name('loans.')->group(function () {
         Route::get('/', [LoanController::class, 'index'])->name('index');
         Route::get('/create/{book}', [LoanController::class, 'create'])->name('create');
@@ -45,6 +48,7 @@ Route::middleware('auth')->group(function () {
         Route::prefix('peminjaman')->name('loans.')->group(function () {
             Route::get('/', [AdminController::class, 'loansHistory'])->name('index');
             Route::get('/{loan}/return', [AdminController::class, 'loansReturn'])->name('return');
+            Route::post('/{loan}/pay-fine', [AdminController::class, 'loansPayFine'])->name('pay-fine');
         });
     });
 });
