@@ -22,6 +22,11 @@ class LoanController extends Controller
 
     public function create(Book $book)
     {
+        // Check if user profile is complete
+        if (!Auth::user()->isProfileComplete()) {
+            return redirect()->route('profile.edit')->with('warning', 'Silakan lengkapi profil Anda (alamat dan nomor HP) terlebih dahulu untuk meminjam buku.');
+        }
+
         $availableCopies = $book->bookCopies()->where('status', 'available')->get();
 
         if ($availableCopies->isEmpty()) {
@@ -33,6 +38,11 @@ class LoanController extends Controller
 
     public function store(Request $request, Book $book)
     {
+        // Check if user profile is complete
+        if (!Auth::user()->isProfileComplete()) {
+            return redirect()->route('profile.edit')->with('warning', 'Silakan lengkapi profil Anda (alamat dan nomor HP) terlebih dahulu untuk meminjam buku.');
+        }
+
         $request->validate([
             'book_copy_id' => 'required|exists:book_copies,id',
             'loan_date' => 'required|date|after_or_equal:today',
@@ -85,9 +95,21 @@ class LoanController extends Controller
             return redirect()->back()->with('error', 'Peminjaman ini sudah dikembalikan.');
         }
 
+        $returnDate = now();
+        $dueDate = \Carbon\Carbon::parse($loan->due_date);
+        $daysOverdue = $returnDate->diffInDays($dueDate, true); // Always positive
+
+        // Calculate fine if overdue (Rp 1,000 per 3 days)
+        $fineAmount = 0;
+        if ($daysOverdue > 0) {
+            $fineAmount = ceil($daysOverdue / 3) * 1000;
+        }
+
         $loan->update([
-            'return_date' => now(),
+            'return_date' => $returnDate,
             'status' => 'returned',
+            'fine_amount' => $fineAmount,
+            'fine_paid' => false,
         ]);
 
         // Update book copy status
@@ -97,6 +119,11 @@ class LoanController extends Controller
 
         // Update book available copies
         $loan->book->increment('available_copies');
+
+        // Build success message
+        if ($fineAmount > 0) {
+            return redirect()->route('loans.index')->with('warning', 'Buku berhasil dikembalikan! Denda keterlambatan: Rp ' . number_format($fineAmount, 0, ',', '.') . ' (' . $daysOverdue . ' hari keterlambatan). Silakan hubungi admin untuk membayar denda.');
+        }
 
         return redirect()->route('loans.index')->with('success', 'Buku berhasil dikembalikan!');
     }

@@ -25,6 +25,9 @@ class AdminController extends Controller
             'total_copies' => BookCopy::count(),
             'active_loans' => Loan::where('status', 'active')->count(),
             'total_users' => \App\Models\User::count(),
+            'total_fines' => Loan::sum('fine_amount'),
+            'unpaid_fines' => Loan::where('fine_amount', '>', 0)->where('fine_paid', false)->count(),
+            'paid_fines' => Loan::where('fine_paid', true)->count(),
         ];
 
         $recentLoans = Loan::with(['user', 'book', 'bookCopy'])->latest()->take(10)->get();
@@ -292,6 +295,10 @@ class AdminController extends Controller
             $query->where('status', 'returned');
         } elseif (request('status') === 'overdue') {
             $query->where('status', 'active')->where('due_date', '<', now());
+        } elseif (request('status') === 'unpaid_fine') {
+            $query->where('fine_amount', '>', 0)->where('fine_paid', false);
+        } elseif (request('status') === 'unpaid_fine') {
+            $query->where('fine_amount', '>', 0)->where('fine_paid', false);
         }
 
         // Sort
@@ -308,9 +315,25 @@ class AdminController extends Controller
     // Return book (admin)
     public function loansReturn(Loan $loan)
     {
+        if ($loan->status !== 'active') {
+            return redirect()->route('admin.loans.index')->with('error', 'Peminjaman ini sudah dikembalikan.');
+        }
+
+        $returnDate = now();
+        $dueDate = \Carbon\Carbon::parse($loan->due_date);
+        $daysOverdue = $returnDate->diffInDays($dueDate, true); // Always positive
+
+        // Calculate fine if overdue (Rp 1,000 per 3 days)
+        $fineAmount = 0;
+        if ($daysOverdue > 0) {
+            $fineAmount = ceil($daysOverdue / 3) * 1000;
+        }
+
         $loan->update([
             'status' => 'returned',
-            'return_date' => now(),
+            'return_date' => $returnDate,
+            'fine_amount' => $fineAmount,
+            'fine_paid' => false,
         ]);
 
         // Update book copy status
@@ -321,6 +344,28 @@ class AdminController extends Controller
         // Update book available copies
         $loan->book->increment('available_copies');
 
+        if ($fineAmount > 0) {
+            return redirect()->route('admin.loans.index')->with('warning', 'Buku berhasil dikembalikan! Denda keterlambatan: Rp ' . number_format($fineAmount, 0, ',', '.') . ' (' . $daysOverdue . ' hari).');
+        }
+
         return redirect()->route('admin.loans.index')->with('success', 'Buku berhasil ditandai sebagai dikembalikan!');
+    }
+
+    // Mark fine as paid
+    public function loansPayFine(Loan $loan)
+    {
+        if ($loan->fine_amount <= 0) {
+            return redirect()->route('admin.loans.index')->with('error', 'Peminjaman ini tidak memiliki denda.');
+        }
+
+        if ($loan->fine_paid) {
+            return redirect()->route('admin.loans.index')->with('error', 'Denda ini sudah lunas.');
+        }
+
+        $loan->update([
+            'fine_paid' => true,
+        ]);
+
+        return redirect()->route('admin.loans.index')->with('success', 'Denda sebesar Rp ' . number_format($loan->fine_amount, 0, ',', '.') . ' berhasil ditandai sebagai lunas!');
     }
 }

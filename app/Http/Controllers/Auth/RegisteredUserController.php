@@ -37,6 +37,7 @@ class RegisteredUserController extends Controller
 
         $user = User::create([
             'name' => $request->name,
+            'member_code' => User::generateMemberCode(),
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
@@ -44,6 +45,10 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
+
+        if ($user->role === 'admin') {
+            return redirect(route('admin.dashboard', absolute: false));
+        }
 
         return redirect(route('dashboard', absolute: false));
     }

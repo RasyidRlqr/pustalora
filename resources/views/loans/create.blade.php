@@ -100,6 +100,17 @@
                             </div>
                         </div>
 
+                        <!-- Fine Policy Info -->
+                        <div class="alert alert-warning mb-4">
+                            <h6 class="alert-heading"><i class="bi bi-exclamation-triangle me-2"></i>Informasi Peminjaman</h6>
+                            <ul class="mb-0 small">
+                                <li>Maksimal peminjaman adalah 14 hari</li>
+                                <li>Denda keterlambatan: <strong>Rp 1.000 per 3 hari</strong></li>
+                                <li>Harus mengembalikan buku dalam kondisi baik</li>
+                                <li>Hubungi admin jika ada kerusakan atau kehilangan</li>
+                            </ul>
+                        </div>
+
                         <!-- Notes -->
                         <div class="mb-4">
                             <label for="notes" class="form-label">Catatan (Opsional)</label>

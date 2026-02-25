@@ -47,6 +47,23 @@
                         </div>
 
                         <div class="col-12">
+                            <label for="address" class="form-label">Alamat</label>
+                            <textarea class="form-control" id="address" name="address" rows="3" placeholder="Masukkan alamat lengkap Anda">{{ old('address', auth()->user()->address) }}</textarea>
+                            @error('address')
+                                <div class="text-danger mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="phone" class="form-label">Nomor HP</label>
+                            <input type="tel" class="form-control" id="phone" name="phone" value="{{ old('phone', auth()->user()->phone) }}" placeholder="Contoh: 081234567890">
+                            @error('phone')
+                                <div class="text-danger mt-1">{{ $message }}</div>
+                            @enderror
+                            <small class="text-muted">Nomor HP diperlukan untuk meminjam buku</small>
+                        </div>
+
+                        <div class="col-12">
                             <div class="alert alert-info">
                                 <i class="bi bi-info-circle me-2"></i>
                                 Email Anda saat ini: <strong>{{ auth()->user()->email }}</strong>
@@ -112,6 +129,21 @@
                     </div>
                     <h5 class="card-title">{{ auth()->user()->name }}</h5>
                     <p class="card-text text-muted">{{ auth()->user()->email }}</p>
+                    <div class="mb-2">
+                        <span class="badge bg-primary">
+                            <i class="bi bi-card-text me-1"></i>{{ auth()->user()->member_code ?? 'Belum ada' }}
+                        </span>
+                    </div>
+                    @if(auth()->user()->phone)
+                        <div class="text-secondary small mb-1">
+                            <i class="bi bi-phone me-1"></i>{{ auth()->user()->phone }}
+                        </div>
+                    @endif
+                    @if(auth()->user()->address)
+                        <div class="text-secondary small mb-2">
+                            <i class="bi bi-geo-alt me-1"></i>{{ auth()->user()->address }}
+                        </div>
+                    @endif
                     <span class="badge badge-primary">
                         <i class="bi bi-shield-check me-1"></i>{{ ucfirst(auth()->user()->role) }}
                     </span>
