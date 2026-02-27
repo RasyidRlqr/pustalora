@@ -163,7 +163,29 @@
                 <!-- Pagination -->
                 @if($books->hasPages())
                     <div class="d-flex justify-content-center mt-4">
-                        {{ $books->appends(request()->query())->links() }}
+                        <nav>
+                            <ul class="pagination mb-0">
+                                @if($books->onFirstPage())
+                                    <li class="page-item disabled">
+                                        <span class="page-link">Previous</span>
+                                    </li>
+                                @else
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ $books->previousPageUrl() }}">Previous</a>
+                                    </li>
+                                @endif
+                                
+                                @if($books->hasMorePages())
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ $books->nextPageUrl() }}">Next</a>
+                                    </li>
+                                @else
+                                    <li class="page-item disabled">
+                                        <span class="page-link">Next</span>
+                                    </li>
+                                @endif
+                            </ul>
+                        </nav>
                     </div>
                 @endif
             @else
