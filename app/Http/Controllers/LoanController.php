@@ -97,7 +97,12 @@ class LoanController extends Controller
 
         $returnDate = now();
         $dueDate = \Carbon\Carbon::parse($loan->due_date);
-        $daysOverdue = $returnDate->diffInDays($dueDate, true); // Always positive
+        
+        // Calculate days overdue correctly
+        $daysOverdue = 0;
+        if ($returnDate->gt($dueDate)) {
+            $daysOverdue = $returnDate->diffInDays($dueDate);
+        }
 
         // Calculate fine if overdue (Rp 1,000 per 3 days)
         $fineAmount = 0;
