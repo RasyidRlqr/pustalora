@@ -63,11 +63,29 @@
             </div>
         @endif
 
-        <!-- Submit Button -->
+    <!-- Submit Button -->
         <button type="submit" class="btn btn-primary w-100">
             <i class="bi bi-box-arrow-in-right me-2"></i>Masuk
         </button>
     </form>
+
+    <!-- Social Login Buttons -->
+    <div class="mt-4">
+        <div class="d-flex align-items-center">
+            <hr class="flex-grow-1">
+            <span class="px-2 text-muted small">atau</span>
+            <hr class="flex-grow-1">
+        </div>
+    </div>
+
+    <div class="d-flex gap-2 mt-3">
+        <a href="{{ route('socialite.redirect', 'google') }}" class="btn btn-outline-secondary flex-fill text-decoration-none">
+            <i class="bi bi-google me-2"></i>Google
+        </a>
+        <a href="{{ route('socialite.redirect', 'facebook') }}" class="btn btn-outline-secondary flex-fill text-decoration-none">
+            <i class="bi bi-facebook me-2"></i>Facebook
+        </a>
+    </div>
 
     <!-- Register Link -->
     <div class="text-center mt-4">
