@@ -146,7 +146,7 @@
                     <h6 class="card-title"><i class="bi bi-info-circle me-2"></i>Informasi Peminjaman</h6>
                     <ul class="mb-0">
                         <li>Maksimal peminjaman adalah 14 hari</li>
-                        <li>Denda keterlambatan: Rp 1.000 per hari</li>
+                        <li>Denda keterlambatan: Rp 1.000 per 3 hari</li>
                         <li>Harus mengembalikan buku dalam kondisi baik</li>
                         <li>Hubungi admin jika ada kerusakan atau kehilangan</li>
                     </ul>
